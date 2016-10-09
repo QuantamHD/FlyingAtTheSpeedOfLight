@@ -50,9 +50,10 @@ static int width, height; // Size of the OpenGL window.
 static float angle = 0.0; // Angle of the spacecraft.
 static float xVal = 0, zVal = 0; // Co-ordinates of the spacecraft.
 static bool isCollision = false; // Is there collision between the spacecraft and an asteroid?
+static bool isGoldenCollision = false;
 static unsigned int spacecraft; // Display lists base index.
 static float goldenX = 30.0, goldenY = 0.0, goldenZ = -40.0;
-static float goldenRow = 2, goldenCol = 3;
+static int goldenRow = 2, goldenCol = 3;
 
 // Routine to draw a bitmap character string.
 void writeBitmapString(void *font, char *string)
@@ -145,10 +146,33 @@ int asteroidCraftCollision(float x, float z, float a)
    return 0;
 }
 
+bool checkForGoldenCollision(float x, float z, float a)
+{
+  float centerX = arrayAsteroids[goldenRow][goldenCol].getCenterX();
+  float centerY = arrayAsteroids[goldenRow][goldenCol].getCenterY();
+  float centerZ = arrayAsteroids[goldenRow][goldenCol].getCenterZ();
+
+  return checkSpheresIntersection(
+     x - 5 * sin( (PI / 180.0) * a),
+     0.0,
+     z - 5 * cos( (PI / 180.0) * a),
+     7.072,
+     centerX,
+     centerY,
+	 centerZ,
+     arrayAsteroids[goldenRow][goldenCol].getRadius() );
+}
+
 void goldenCameraViewPort()
 {
     glViewport(width / 2.0, 0, width / 2.0, height);
     glLoadIdentity();
+
+    glPushMatrix();
+   glColor3f(1.0, 0.0, 0.0);
+   glRasterPos3f(-28.0, 25.0, -30.0);
+   if (isGoldenCollision) writeBitmapString((void*)font, "You have found Gold!");
+   glPopMatrix();
 
     gluLookAt(goldenX, goldenY, goldenZ, xVal, 0.0, zVal, 0.0, 1.0, 0.0);
 
@@ -276,6 +300,15 @@ void specialKeyInput(int key, int x, int y)
 	  angle = tempAngle;
    }
    else isCollision = true;
+
+
+   if (!checkForGoldenCollision(tempxVal, tempzVal, tempAngle))
+   {
+       isGoldenCollision = false;
+   }
+   else {
+       isGoldenCollision = true;
+   }
 
    glutPostRedisplay();
 }
