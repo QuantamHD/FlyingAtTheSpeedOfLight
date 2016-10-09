@@ -124,13 +124,9 @@ int asteroidCraftCollision(float x, float z, float a)
    return 0;
 }
 
-// Drawing routine.
-void drawScene(void)
+void overviewViewPort()
 {
    int i, j;
-   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-   // Begin left viewport.
    glViewport (0, 0, width / 2.0,  height);
    glLoadIdentity();
 
@@ -155,9 +151,11 @@ void drawScene(void)
    glRotatef(angle, 0.0, 1.0, 0.0);
    glCallList(spacecraft);
    glPopMatrix();
-   // End left viewport.
+}
 
-   // Begin right viewport.
+void firstpersonViewPort()
+{
+   int i, j;
    glViewport(width / 2.0, 0, width / 2.0, height);
    glLoadIdentity();
 
@@ -192,7 +190,16 @@ void drawScene(void)
    for (j = 0; j < COLUMNS; j++)
       for (i = 0; i < ROWS; i++)
          arrayAsteroids[i][j].draw();
-   // End right viewport.
+}
+
+// Drawing routine.
+void drawScene(void)
+{
+   int i, j;
+   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+   firstpersonViewPort();
+   overviewViewPort();
 
    glutSwapBuffers();
 }
