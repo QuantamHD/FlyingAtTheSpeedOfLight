@@ -54,6 +54,8 @@ static unsigned int spacecraft; // Display lists base index.
 static float colorAnimated = 0.0;
 static Asteroid bigAsteroid;
 static int animationPeriod = 100;
+static float goldenX = 30.0, goldenY = 0.0, goldenZ = -40.0;
+static int goldenRow = 2, goldenCol = 3;
 
 // Routine to draw a bitmap character string.
 void writeBitmapString(void *font, char *string)
@@ -63,23 +65,26 @@ void writeBitmapString(void *font, char *string)
    for (c = string; *c != '\0'; c++) glutBitmapCharacter(font, *c);
 }
 
+
+
+Asteroid arrayAsteroids[ROWS][COLUMNS]; // Global array of asteroids.
+
 void animate(int value){
-    colorAnimated+= 0.2;
-    int colorChange = (int)((sin(angle * 0.09)*20) - 20);
+    colorAnimated+= 1;
+    int colorChange = (int)((sin(colorAnimated*0.6)*50));
     bigAsteroid.changeColor(colorChange);
-    std::cout << "Hello" << colorAnimated << "\n";
+    arrayAsteroids[goldenRow][goldenCol] = bigAsteroid;
+    bigAsteroid.draw();
     glutPostRedisplay();
     glutTimerFunc(animationPeriod, animate, value);
 }
 
-Asteroid arrayAsteroids[ROWS][COLUMNS]; // Global array of asteroids.
-
 void makeBigGoldenAsteroid()
 {
-    int i = 2;
-    int j = 3;
-    arrayAsteroids[i][j] = Asteroid( 30.0 * (-COLUMNS / 2 + j), 0.0, -40.0 - 30.0 * i, 10.0,
-			                                    239 , 239 , 23 );
+    int i = goldenRow;
+    int j = goldenCol;
+    arrayAsteroids[i][j] = Asteroid( goldenX, goldenY, goldenZ, 10.0,
+			                                    210 , 210 , 23 );
 
     bigAsteroid = arrayAsteroids[i][j];
 }
@@ -155,28 +160,21 @@ int asteroidCraftCollision(float x, float z, float a)
    return 0;
 }
 
-void overviewViewPort()
+void goldenCameraViewPort()
 {
-   int i, j;
-   glViewport(width / 2.0, 0, width / 2.0, height);
-   glLoadIdentity();
+    glViewport(width / 2.0, 0, width / 2.0, height);
+    glLoadIdentity();
 
-   // Write text in isolated (i.e., before gluLookAt) translate block.
-   glPushMatrix();
-   glColor3f(1.0, 0.0, 0.0);
-   glRasterPos3f(-28.0, 25.0, -30.0);
-   if (isCollision) writeBitmapString((void*)font, "Cannot - will crash!");
-   glPopMatrix();
+    gluLookAt(goldenX, goldenY, goldenZ, xVal, 0.0, zVal, 0.0, 1.0, 0.0);
 
-   // Fixed camera.
-   gluLookAt(0.0, 10.0, 20.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    // Draw all the asteroids in arrayAsteroids.
+    for (int j = 0; j < COLUMNS; j++)
+       for (int i = 0; i < ROWS; i++) {
+         if (i != goldenRow && j != goldenCol)
+            arrayAsteroids[i][j].draw();
+       }
 
-   // Draw all the asteroids in arrayAsteroids.
-   for (j = 0; j < COLUMNS; j++)
-      for (i = 0; i < ROWS; i++)
-         arrayAsteroids[i][j].draw();
 
-   // Draw spacecraft.
    glPushMatrix();
    glTranslatef(xVal, 0.0, zVal);
    glRotatef(angle, 0.0, 1.0, 0.0);
@@ -221,6 +219,8 @@ void firstpersonViewPort()
    for (j = 0; j < COLUMNS; j++)
       for (i = 0; i < ROWS; i++)
          arrayAsteroids[i][j].draw();
+
+   //bigAsteroid.draw();
 }
 
 // Drawing routine.
@@ -230,7 +230,7 @@ void drawScene(void)
    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
    firstpersonViewPort(); //left view port
-   overviewViewPort(); //Right view port
+   goldenCameraViewPort(); //Right view port
 
    glutSwapBuffers();
 }

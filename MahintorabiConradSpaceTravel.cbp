@@ -43,6 +43,8 @@
 			<Add library="gdi32" />
 			<Add directory="C:/MinGW/lib" />
 		</Linker>
+		<Unit filename="asteroid.cpp" />
+		<Unit filename="asteroid.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

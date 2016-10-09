@@ -60,6 +60,9 @@ Asteroid::Asteroid(float x, float y, float z, float r, unsigned char colorR,
    color[0] = colorR;
    color[1] = colorG;
    color[2] = colorB;
+   colorModifier[0] = 0;
+   colorModifier[1] = 0;
+   colorModifier[2] = 0;
 }
 
 // Function to draw asteroid.
@@ -69,15 +72,22 @@ void Asteroid::draw()
    {
       glPushMatrix();
       glTranslatef(centerX, centerY, centerZ);
-      glColor3ubv(color);
-      glutWireSphere(radius, (int)radius * 6, (int)radius * 6);
+      glColor3f((color[0] + colorModifier[0])/255.0, (color[1] + colorModifier[1])/255.0, (color[2] + colorModifier[2])/255.0);
+      glutWireSphere(radius, (int)(radius) * 6, (int)radius * 6);
       glPopMatrix();
+      std::cout << (color[0] + colorModifier[0])/255.0 << "\n";
    }
 }
 
 void Asteroid::changeColor(int amount){
-    color[0]+= amount;
-    color[1]+= amount;
-    color[2]+= amount;
+    colorModifier[0] = amount;
+    colorModifier[1] = amount;
+    colorModifier[2] = amount;
+
+    std::cout << (int)colorModifier[0] << "\n";
+}
+
+void Asteroid::printColor(){
+    std::cout << color[0] << ", " << color[1] << ", " << color[2] <<  "\n";
 }
 
