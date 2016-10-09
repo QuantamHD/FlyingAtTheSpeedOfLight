@@ -272,3 +272,28 @@
 
 1476042329 u:\graphics2016\mahintorabiconradspacetravel\asteroid.h
 
+1476043569 source:u:\graphics\mahintorabiconradspacetravel\main.cpp
+	<cstdlib>
+	<cmath>
+	<iostream>
+	"asteroid.h"
+	<GL/glew.h>
+	<GL/freeglut.h>
+	<OpenGL/glext.h>
+	<GL/glew.h>
+	<GL/freeglut.h>
+	<GL/glext.h>
+
+1476042699 source:u:\graphics\mahintorabiconradspacetravel\asteroid.cpp
+	<cstdlib>
+	<cmath>
+	<iostream>
+	<GL/glew.h>
+	<GL/freeglut.h>
+	<OpenGL/glext.h>
+	<GL/glew.h>
+	<GL/freeglut.h>
+	<GL/glext.h>
+
+1476042699 u:\graphics\mahintorabiconradspacetravel\asteroid.h
+
