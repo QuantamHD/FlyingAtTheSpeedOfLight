@@ -62,22 +62,18 @@ void writeBitmapString(void *font, char *string)
 
 Asteroid arrayAsteroids[ROWS][COLUMNS]; // Global array of asteroids.
 
-// Initialization routine.
-void setup(void)
+void makeBigGoldenAsteroid()
 {
-   int i, j;
+    int i = 2;
+    int j = 3;
+    arrayAsteroids[i][j] = Asteroid( 30.0 * (-COLUMNS / 2 + j), 0.0, -40.0 - 30.0 * i, 10.0,
+			                                    239 , 239 , 23 );
+}
 
-   spacecraft = glGenLists(1);
-   glNewList(spacecraft, GL_COMPILE);
-	  glPushMatrix();
-	  glRotatef(180.0, 0.0, 1.0, 0.0); // To make the spacecraft point down the $z$-axis initially.
-	  glColor3f (1.0, 1.0, 1.0);
-      glutWireCone(5.0, 10.0, 10, 10);
-	  glPopMatrix();
-   glEndList();
-
-   // Initialize global arrayAsteroids.
-   for (j = 0; j < COLUMNS; j++)
+void initAsteroids()
+{
+    int i, j;
+    for (j = 0; j < COLUMNS; j++)
       for (i = 0; i < ROWS; i++)
 	     if (rand() % 100 < FILL_PROBABILITY)
          // If rand()%100 >= FILL_PROBABILITY the default constructor asteroid remains in the slot
@@ -92,6 +88,26 @@ void setup(void)
 			   arrayAsteroids[i][j] = Asteroid( 15 + 30.0 * (-COLUMNS / 2 + j), 0.0, -40.0 - 30.0 * i, 3.0,
 			                                    rand() % 256, rand() % 256, rand() % 256);
 		 }
+
+
+   makeBigGoldenAsteroid();
+}
+
+// Initialization routine.
+void setup(void)
+{
+
+   spacecraft = glGenLists(1);
+   glNewList(spacecraft, GL_COMPILE);
+	  glPushMatrix();
+	  glRotatef(180.0, 0.0, 1.0, 0.0); // To make the spacecraft point down the $z$-axis initially.
+	  glColor3f (1.0, 1.0, 1.0);
+      glutWireCone(5.0, 10.0, 10, 10);
+	  glPopMatrix();
+   glEndList();
+
+   // Initialize global arrayAsteroids.
+   initAsteroids();
 
    glEnable(GL_DEPTH_TEST);
    glClearColor (0.0, 0.0, 0.0, 0.0);
