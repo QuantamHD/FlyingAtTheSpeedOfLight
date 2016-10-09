@@ -298,3 +298,29 @@
 
 1476042699 u:\graphics\mahintorabiconradspacetravel\asteroid.h
 
+1476044104 source:u:\graphics2016\flyingatthespeedoflight\asteroid.cpp
+	<cstdlib>
+	<cmath>
+	<iostream>
+	"asteroid.h"
+	<GL/glew.h>
+	<GL/freeglut.h>
+	<OpenGL/glext.h>
+	<GL/glew.h>
+	<GL/freeglut.h>
+	<GL/glext.h>
+
+1476044104 u:\graphics2016\flyingatthespeedoflight\asteroid.h
+
+1476044104 source:u:\graphics2016\flyingatthespeedoflight\main.cpp
+	<cstdlib>
+	<cmath>
+	<iostream>
+	"asteroid.h"
+	<GL/glew.h>
+	<GL/freeglut.h>
+	<OpenGL/glext.h>
+	<GL/glew.h>
+	<GL/freeglut.h>
+	<GL/glext.h>
+
