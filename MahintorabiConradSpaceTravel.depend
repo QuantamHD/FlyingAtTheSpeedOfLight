@@ -284,10 +284,11 @@
 	<GL/freeglut.h>
 	<GL/glext.h>
 
-1476042699 source:u:\graphics\mahintorabiconradspacetravel\asteroid.cpp
+1476043669 source:u:\graphics\mahintorabiconradspacetravel\asteroid.cpp
 	<cstdlib>
 	<cmath>
 	<iostream>
+	"asteroid.h"
 	<GL/glew.h>
 	<GL/freeglut.h>
 	<OpenGL/glext.h>
