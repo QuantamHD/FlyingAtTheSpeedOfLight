@@ -122,6 +122,9 @@ void setup(void)
 	  glRotatef(180.0, 0.0, 1.0, 0.0); // To make the spacecraft point down the $z$-axis initially.
 	  glColor3f (1.0, 1.0, 1.0);
       glutWireCone(5.0, 10.0, 10, 10);
+
+      glRotatef(-90, 1, 0, 0);
+      glutWireCylinder(0.3, 30.0, 10, 10);
 	  glPopMatrix();
    glEndList();
 
