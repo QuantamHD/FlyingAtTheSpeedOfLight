@@ -124,10 +124,14 @@ int asteroidCraftCollision(float x, float z, float a)
    return 0;
 }
 
-void overviewViewPort()
+void overviewViewPort(bool isRight)
 {
    int i, j;
-   glViewport (0, 0, width / 2.0,  height);
+   if (isRight) {
+     glViewport(width / 2.0, 0, width / 2.0, height);
+   } else {
+     glViewport (0, 0, width / 2.0,  height);
+   }
    glLoadIdentity();
 
    // Write text in isolated (i.e., before gluLookAt) translate block.
@@ -153,10 +157,14 @@ void overviewViewPort()
    glPopMatrix();
 }
 
-void firstpersonViewPort()
+void firstpersonViewPort(bool isRight)
 {
    int i, j;
-   glViewport(width / 2.0, 0, width / 2.0, height);
+   if (isRight) {
+     glViewport(width / 2.0, 0, width / 2.0, height);
+   } else {
+     glViewport (0, 0, width / 2.0,  height);
+   }
    glLoadIdentity();
 
    // Write text in isolated (i.e., before gluLookAt) translate block.
@@ -198,8 +206,8 @@ void drawScene(void)
    int i, j;
    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-   firstpersonViewPort();
-   overviewViewPort();
+   firstpersonViewPort(false); //Right
+   overviewViewPort(true);
 
    glutSwapBuffers();
 }
