@@ -52,6 +52,9 @@ static float xVal = 0, zVal = 0; // Co-ordinates of the spacecraft.
 static bool isCollision = false; // Is there collision between the spacecraft and an asteroid?
 static bool isGoldenCollision = false;
 static unsigned int spacecraft; // Display lists base index.
+static float colorAnimated = 0.0;
+static Asteroid bigAsteroid;
+static int animationPeriod = 100;
 static float goldenX = 30.0, goldenY = 0.0, goldenZ = -40.0;
 static int goldenRow = 2, goldenCol = 3;
 
@@ -63,14 +66,28 @@ void writeBitmapString(void *font, char *string)
    for (c = string; *c != '\0'; c++) glutBitmapCharacter(font, *c);
 }
 
+
+
 Asteroid arrayAsteroids[ROWS][COLUMNS]; // Global array of asteroids.
+
+void animate(int value){
+    colorAnimated+= 1;
+    int colorChange = (int)((sin(colorAnimated*0.6)*50));
+    bigAsteroid.changeColor(colorChange);
+    arrayAsteroids[goldenRow][goldenCol] = bigAsteroid;
+    bigAsteroid.draw();
+    glutPostRedisplay();
+    glutTimerFunc(animationPeriod, animate, value);
+}
 
 void makeBigGoldenAsteroid()
 {
     int i = goldenRow;
     int j = goldenCol;
     arrayAsteroids[i][j] = Asteroid( goldenX, goldenY, goldenZ, 10.0,
-			                                    239 , 239 , 23 );
+			                                    210 , 210 , 23 );
+
+    bigAsteroid = arrayAsteroids[i][j];
 }
 
 void initAsteroids()
@@ -117,6 +134,7 @@ void setup(void)
 
    glEnable(GL_DEPTH_TEST);
    glClearColor (0.0, 0.0, 0.0, 0.0);
+   animate(1);
 }
 
 // Function to check if two spheres centered at (x1,y1,z1) and (x2,y2,z2) with
@@ -183,7 +201,8 @@ void goldenCameraViewPort()
             arrayAsteroids[i][j].draw();
        }
 
-    glPushMatrix();
+
+   glPushMatrix();
    glTranslatef(xVal, 0.0, zVal);
    glRotatef(angle, 0.0, 1.0, 0.0);
    glCallList(spacecraft);
@@ -227,6 +246,8 @@ void firstpersonViewPort()
    for (j = 0; j < COLUMNS; j++)
       for (i = 0; i < ROWS; i++)
          arrayAsteroids[i][j].draw();
+
+   //bigAsteroid.draw();
 }
 
 // Drawing routine.

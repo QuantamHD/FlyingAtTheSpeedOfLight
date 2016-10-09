@@ -11,11 +11,15 @@ public:
    float getCenterY() { return centerY; }
    float getCenterZ() { return centerZ; }
    float getRadius()  { return radius; }
+   void changeColor(int amout);
+   void printColor();
    void draw();
 
 private:
    float centerX, centerY, centerZ, radius;
    unsigned char color[3];
+   int colorModifier[3];
+
 };
 
 #endif // ASTEROID_H_INCLUDED
