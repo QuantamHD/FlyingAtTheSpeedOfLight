@@ -51,6 +51,9 @@ static float angle = 0.0; // Angle of the spacecraft.
 static float xVal = 0, zVal = 0; // Co-ordinates of the spacecraft.
 static bool isCollision = false; // Is there collision between the spacecraft and an asteroid?
 static unsigned int spacecraft; // Display lists base index.
+static float colorAnimated = 0.0;
+static Asteroid bigAsteroid;
+static int animationPeriod = 100;
 
 // Routine to draw a bitmap character string.
 void writeBitmapString(void *font, char *string)
@@ -58,6 +61,15 @@ void writeBitmapString(void *font, char *string)
    char *c;
 
    for (c = string; *c != '\0'; c++) glutBitmapCharacter(font, *c);
+}
+
+void animate(int value){
+    colorAnimated+= 0.2;
+    int colorChange = (int)((sin(angle * 0.09)*20) - 20);
+    bigAsteroid.changeColor(colorChange);
+    std::cout << "Hello" << colorAnimated << "\n";
+    glutPostRedisplay();
+    glutTimerFunc(animationPeriod, animate, value);
 }
 
 Asteroid arrayAsteroids[ROWS][COLUMNS]; // Global array of asteroids.
@@ -68,6 +80,8 @@ void makeBigGoldenAsteroid()
     int j = 3;
     arrayAsteroids[i][j] = Asteroid( 30.0 * (-COLUMNS / 2 + j), 0.0, -40.0 - 30.0 * i, 10.0,
 			                                    239 , 239 , 23 );
+
+    bigAsteroid = arrayAsteroids[i][j];
 }
 
 void initAsteroids()
@@ -111,6 +125,7 @@ void setup(void)
 
    glEnable(GL_DEPTH_TEST);
    glClearColor (0.0, 0.0, 0.0, 0.0);
+   animate(1);
 }
 
 // Function to check if two spheres centered at (x1,y1,z1) and (x2,y2,z2) with

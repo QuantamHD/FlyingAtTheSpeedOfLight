@@ -11,6 +11,7 @@ public:
    float getCenterY() { return centerY; }
    float getCenterZ() { return centerZ; }
    float getRadius()  { return radius; }
+   void changeColor(int amout);
    void draw();
 
 private:

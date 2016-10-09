@@ -75,3 +75,9 @@ void Asteroid::draw()
    }
 }
 
+void Asteroid::changeColor(int amount){
+    color[0]+= amount;
+    color[1]+= amount;
+    color[2]+= amount;
+}
+
