@@ -51,6 +51,8 @@ static float angle = 0.0; // Angle of the spacecraft.
 static float xVal = 0, zVal = 0; // Co-ordinates of the spacecraft.
 static bool isCollision = false; // Is there collision between the spacecraft and an asteroid?
 static unsigned int spacecraft; // Display lists base index.
+static float goldenX = 30.0, goldenY = 0.0, goldenZ = -40.0;
+static float goldenRow = 2, goldenCol = 3;
 
 // Routine to draw a bitmap character string.
 void writeBitmapString(void *font, char *string)
@@ -64,9 +66,9 @@ Asteroid arrayAsteroids[ROWS][COLUMNS]; // Global array of asteroids.
 
 void makeBigGoldenAsteroid()
 {
-    int i = 2;
-    int j = 3;
-    arrayAsteroids[i][j] = Asteroid( 30.0 * (-COLUMNS / 2 + j), 0.0, -40.0 - 30.0 * i, 10.0,
+    int i = goldenRow;
+    int j = goldenCol;
+    arrayAsteroids[i][j] = Asteroid( goldenX, goldenY, goldenZ, 10.0,
 			                                    239 , 239 , 23 );
 }
 
@@ -140,29 +142,21 @@ int asteroidCraftCollision(float x, float z, float a)
    return 0;
 }
 
-void overviewViewPort()
+void goldenCameraViewPort()
 {
-   int i, j;
-   glViewport(width / 2.0, 0, width / 2.0, height);
-   glLoadIdentity();
+    glViewport(width / 2.0, 0, width / 2.0, height);
+    glLoadIdentity();
 
-   // Write text in isolated (i.e., before gluLookAt) translate block.
-   glPushMatrix();
-   glColor3f(1.0, 0.0, 0.0);
-   glRasterPos3f(-28.0, 25.0, -30.0);
-   if (isCollision) writeBitmapString((void*)font, "Cannot - will crash!");
-   glPopMatrix();
+    gluLookAt(goldenX, goldenY, goldenZ, xVal, 0.0, zVal, 0.0, 1.0, 0.0);
 
-   // Fixed camera.
-   gluLookAt(0.0, 10.0, 20.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    // Draw all the asteroids in arrayAsteroids.
+    for (int j = 0; j < COLUMNS; j++)
+       for (int i = 0; i < ROWS; i++) {
+         if (i != goldenRow && j != goldenCol)
+            arrayAsteroids[i][j].draw();
+       }
 
-   // Draw all the asteroids in arrayAsteroids.
-   for (j = 0; j < COLUMNS; j++)
-      for (i = 0; i < ROWS; i++)
-         arrayAsteroids[i][j].draw();
-
-   // Draw spacecraft.
-   glPushMatrix();
+    glPushMatrix();
    glTranslatef(xVal, 0.0, zVal);
    glRotatef(angle, 0.0, 1.0, 0.0);
    glCallList(spacecraft);
@@ -215,7 +209,7 @@ void drawScene(void)
    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
    firstpersonViewPort(); //left view port
-   overviewViewPort(); //Right view port
+   goldenCameraViewPort(); //Right view port
 
    glutSwapBuffers();
 }
